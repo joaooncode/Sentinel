@@ -10,25 +10,24 @@ const SafeAreaView = styled(RNSafeAreaView);
 export default function Index() {
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
-      <Text className="font-bold text-success">
-        Sentinel - Your Expense Tracker
-      </Text>
-      <Link href="/onboarding">
-        <Text className="text-blue-500">Get Started</Text>
-      </Link>
-      <Link href="/sign-in">
-        <Text className="text-blue-500">Sign In</Text>
-      </Link>
-      <Link href="/sign-up">
-        <Text className="text-blue-500">Sign Up</Text>
+      <Text className="text-7xl font-sans-extrabold">Home</Text>
+      <Link
+        className="mt-4 p-4 text-center font-sans-bold rounded bg-primary text-white"
+        href="/onboarding"
+      >
+        Get Started
       </Link>
       <Link
-        href={{
-          pathname: "/subscriptions/[id]",
-          params: { id: "claude" },
-        }}
+        className="mt-4 p-4 text-center font-sans-bold rounded bg-primary text-white"
+        href="/sign-in"
       >
-        <Text className="text-blue-500">Claude Max Subscription</Text>
+        Sign In
+      </Link>
+      <Link
+        className="mt-4 p-4 text-center font-sans-bold rounded bg-primary text-white"
+        href="/sign-up"
+      >
+        Sign Up
       </Link>
     </SafeAreaView>
   );
