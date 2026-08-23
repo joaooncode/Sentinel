@@ -14,14 +14,17 @@ Esta skill define as diretrizes e procedimentos para inspecionar alterações, c
 ## 1. Verificação e Criação de Commits
 
 ### Checklist pré-commit
+
 1. Execute `git status` e `git diff` para revisar com precisão o que foi alterado.
 2. Certifique-se de não commitar arquivos temporários, segredos (`.env`), chaves de API, logs ou pastas de build (`dist/`, `build/`, `.expo/`, etc.).
 3. Garanta que o projeto esteja compilando e que linters/testes relevantes não estejam quebrados.
 
 ### Padrão de Mensagem (Conventional Commits)
+
 Utilize o padrão: `<tipo>(<escopo opcional>): <descrição no imperativo/presente>`
 
 Tipos permitidos:
+
 - `feat`: Nova funcionalidade para o usuário ou sistema.
 - `fix`: Correção de bug.
 - `refactor`: Refatoração de código sem alteração de comportamento externo.
@@ -32,6 +35,7 @@ Tipos permitidos:
 - `chore`: Atualização de dependências, scripts de build ou configurações gerais.
 
 Exemplo de commit:
+
 ```bash
 git add <arquivos-específicos>
 git commit -m "feat(auth): adicionar suporte a login biométrico com expo-local-authentication"
@@ -57,14 +61,23 @@ git commit -m "feat(auth): adicionar suporte a login biométrico com expo-local-
 Ao finalizar uma tarefa e ter os commits organizados:
 
 1. **Enviar as alterações para o repositório remoto**:
+
    ```bash
    git push -u origin HEAD
    ```
 
-2. **Criar o Pull Request**:
-   Use o comando `gh pr create` estruturado com título e descrição markdown:
+2. **Identificar Labels Apropriadas**:
+   Selecione labels correspondentes ao tipo de alteração (ex: `enhancement`, `bug`, `documentation`, `chore`):
+   - Novas funcionalidades / melhorias: `enhancement`
+   - Correções de bug: `bug`
+   - Documentação: `documentation`
+   - Tarefas e configs: `chore` / `enhancement`
+
+3. **Criar o Pull Request com Labels**:
+   Use o comando `gh pr create` estruturado com título, corpo e a flag `--label`:
+
    ```bash
-   gh pr create --title "feat(auth): suporte a autenticação biométrica" --body "## 📌 Descrição
+   gh pr create --title "feat(auth): suporte a autenticação biométrica" --label "enhancement" --body "## 📌 Descrição
    Breve resumo das alterações e objetivo do Pull Request.
 
    ## 🛠️ Alterações Realizadas
@@ -82,7 +95,7 @@ Ao finalizar uma tarefa e ter os commits organizados:
    "
    ```
 
-3. **Verificar status do PR**:
+4. **Verificar status do PR**:
    ```bash
    gh pr view
    ```

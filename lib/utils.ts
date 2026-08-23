@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 /**
  * Formats a numeric value into a standard Brazilian currency string (pt-BR).
  *
@@ -5,10 +7,10 @@
  * @param currency - The ISO 4217 currency code (defaults to 'BRL').
  * @returns Formatted currency string (e.g., "R$ 1.234,56").
  */
-export function formatCurrency(
+export const formatCurrency = (
   value: number | string,
   currency: string = "BRL",
-): string {
+): string => {
   const numericValue = typeof value === "string" ? parseFloat(value) : value;
 
   if (
@@ -38,6 +40,35 @@ export function formatCurrency(
 
     return `${symbol} ${formattedNumber}`;
   }
-}
+};
 
-export default formatCurrency;
+/**
+ * Formats a date string into a standard display date (MM/DD/YYYY).
+ *
+ * @param value - The date string to format.
+ * @returns Formatted date string or "Not provided" if invalid or missing.
+ */
+export const formatSubscriptionDateTime = (value?: string): string => {
+  if (!value) return "Not provided";
+  const parsedDate = dayjs(value);
+  return parsedDate.isValid()
+    ? parsedDate.format("MM/DD/YYYY")
+    : "Not provided";
+};
+
+/**
+ * Capitalizes the first letter of a status string.
+ *
+ * @param value - The status string to format.
+ * @returns Capitalized status label or "Unknown" if missing.
+ */
+export const formatStatusLabel = (value?: string): string => {
+  if (!value) return "Unknown";
+  return value.charAt(0).toUpperCase() + value.slice(1);
+};
+
+export default {
+  formatSubscriptionDateTime,
+  formatStatusLabel,
+  formatCurrency,
+};

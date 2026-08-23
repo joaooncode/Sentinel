@@ -16,8 +16,7 @@ Whenever the user starts a prompt with any of the following shortcuts, immediate
 - `/pr [título/descrição opcional]`:
   1. Verificar status atual da branch (`git status`, `git log`).
   2. Fazer push para a branch remota (`git push -u origin HEAD`).
-  3. Criar o Pull Request utilizando `gh pr create` estruturado com descrição, lista de alterações e instruções de teste.
+  3. Criar o Pull Request utilizando `gh pr create` estruturado com descrição, lista de alterações, instruções de teste e labels adequadas (`--label "enhancement"`, `--label "bug"`, etc.).
 
 - `/commit-pr [mensagem/instrução opcional]`:
   1. Realizar o fluxo do `/commit` seguido imediatamente pelo fluxo do `/pr`.
-
