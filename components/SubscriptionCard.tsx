@@ -48,7 +48,9 @@ const SubscriptionCard = ({
         </View>
         <View className="sub-price-box">
           <Text className="sub-price">{formatCurrency(price, currency)}</Text>
-          <Text className="sub-billing">{billing || "Não fornecido"}</Text>
+          <Text className="sub-billing">
+            {billing?.trim() || "Não fornecido"}
+          </Text>
         </View>
       </View>
       {expanded && (
