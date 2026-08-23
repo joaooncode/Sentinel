@@ -1,5 +1,5 @@
 import "../global.css";
-import { ClerkProvider } from "@clerk/expo";
+import { ClerkProvider, useAuth } from "@clerk/expo";
 import { tokenCache } from "@clerk/expo/token-cache";
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
@@ -15,7 +15,8 @@ if (!publishableKey) {
 
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+function InitialLayout() {
+  const { isLoaded: authLoaded } = useAuth();
   const [fontsLoaded] = useFonts({
     "sans-regular": require("@/assets/fonts/PlusJakartaSans-Regular.ttf"),
     "sans-bold": require("@/assets/fonts/PlusJakartaSans-Bold.ttf"),
@@ -26,16 +27,22 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    if (fontsLoaded) {
+    if (fontsLoaded && authLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded, authLoaded]);
 
-  if (!fontsLoaded) return null;
+  if (!fontsLoaded || !authLoaded) return null;
 
   return (
+    <Stack screenOptions={{ headerShown: false }} initialRouteName="(tabs)" />
+  );
+}
+
+export default function RootLayout() {
+  return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <Stack screenOptions={{ headerShown: false }} initialRouteName="(tabs)" />
+      <InitialLayout />
     </ClerkProvider>
   );
 }
