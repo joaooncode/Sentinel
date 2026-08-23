@@ -88,150 +88,160 @@ export default function SignUpScreen() {
     }
   };
 
+  const hasEmailError = Boolean(errors?.fields?.emailAddress);
+  const hasPasswordError = Boolean(errors?.fields?.password);
+  const hasCodeError = Boolean(errors?.fields?.code);
+
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <SafeAreaView className="auth-safe-area">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        className="flex-1"
+        className="auth-screen"
       >
         <ScrollView
-          contentContainerClassName="flex-grow justify-center px-6 py-10"
+          className="auth-scroll"
+          contentContainerClassName="auth-content"
           keyboardShouldPersistTaps="handled"
         >
-          <View className="mb-8">
-            <Text className="text-4xl font-sans-extrabold text-primary mb-2">
+          <View className="auth-brand-block">
+            <View className="auth-logo-wrap">
+              <View className="auth-logo-mark">
+                <Text className="auth-logo-mark-text">S</Text>
+              </View>
+              <View>
+                <Text className="auth-wordmark">Sentinel</Text>
+                <Text className="auth-wordmark-sub">Subscription Manager</Text>
+              </View>
+            </View>
+            <Text className="auth-title">
               {pendingVerification ? "Verificar E-mail" : "Criar Conta"}
             </Text>
-            <Text className="text-base font-sans text-muted-foreground">
+            <Text className="auth-subtitle">
               {pendingVerification
                 ? `Digite o código de 6 dígitos enviado para ${emailAddress}`
                 : "Crie sua conta para começar a organizar suas finanças"}
             </Text>
           </View>
 
-          {errorMessage ||
-          errors?.fields?.emailAddress ||
-          errors?.fields?.password ||
-          errors?.fields?.code ? (
-            <View className="mb-4 p-3.5 bg-destructive/10 rounded-2xl border border-destructive/20">
-              <Text className="text-destructive font-sans-medium text-sm">
-                {errorMessage ||
-                  errors?.fields?.emailAddress?.message ||
-                  errors?.fields?.password?.message ||
-                  errors?.fields?.code?.message}
-              </Text>
-            </View>
-          ) : null}
+          <View className="auth-card">
+            {errorMessage ? (
+              <View className="mb-4 rounded-2xl border border-destructive/20 bg-destructive/10 p-3.5">
+                <Text className="auth-error text-sm">{errorMessage}</Text>
+              </View>
+            ) : null}
 
-          {!pendingVerification ? (
-            <>
-              {/* Social Sign-Up Buttons */}
-              <SocialAuthButtons
-                mode="signUp"
-                onError={setErrorMessage}
-                disabled={isSubmitting}
-              />
+            {!pendingVerification ? (
+              <>
+                {/* Social Sign-Up Buttons */}
+                <SocialAuthButtons
+                  mode="signUp"
+                  onError={setErrorMessage}
+                  disabled={isSubmitting}
+                />
 
-              <View className="gap-4">
-                <View>
-                  <Text className="text-sm font-sans-medium text-primary mb-1.5">
-                    E-mail
-                  </Text>
-                  <TextInput
-                    autoCapitalize="none"
-                    keyboardType="email-address"
-                    placeholder="seu@email.com"
-                    placeholderTextColor="rgba(0,0,0,0.3)"
-                    value={emailAddress}
-                    onChangeText={setEmailAddress}
-                    className="bg-card border border-black/10 rounded-2xl px-4 py-3.5 text-base font-sans text-primary"
-                  />
+                <View className="auth-form">
+                  <View className="auth-field">
+                    <Text className="auth-label">E-mail</Text>
+                    <TextInput
+                      autoCapitalize="none"
+                      keyboardType="email-address"
+                      placeholder="seu@email.com"
+                      placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                      value={emailAddress}
+                      onChangeText={setEmailAddress}
+                      className={`auth-input ${hasEmailError ? "auth-input-error" : ""}`}
+                    />
+                    {errors?.fields?.emailAddress ? (
+                      <Text className="auth-error">
+                        {errors.fields.emailAddress.message}
+                      </Text>
+                    ) : null}
+                  </View>
+
+                  <View className="auth-field">
+                    <Text className="auth-label">Senha</Text>
+                    <TextInput
+                      secureTextEntry
+                      placeholder="••••••••"
+                      placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                      value={password}
+                      onChangeText={setPassword}
+                      className={`auth-input ${hasPasswordError ? "auth-input-error" : ""}`}
+                    />
+                    {errors?.fields?.password ? (
+                      <Text className="auth-error">
+                        {errors.fields.password.message}
+                      </Text>
+                    ) : null}
+                  </View>
+
+                  <TouchableOpacity
+                    onPress={handleSignUp}
+                    disabled={isSubmitting}
+                    activeOpacity={0.8}
+                    className={`auth-button ${isSubmitting ? "auth-button-disabled" : ""}`}
+                  >
+                    {isSubmitting ? (
+                      <ActivityIndicator color="#081126" />
+                    ) : (
+                      <Text className="auth-button-text">Continuar</Text>
+                    )}
+                  </TouchableOpacity>
                 </View>
-
-                <View>
-                  <Text className="text-sm font-sans-medium text-primary mb-1.5">
-                    Senha
-                  </Text>
+              </>
+            ) : (
+              <View className="auth-form">
+                <View className="auth-field">
+                  <Text className="auth-label">Código de Verificação</Text>
                   <TextInput
-                    secureTextEntry
-                    placeholder="••••••••"
-                    placeholderTextColor="rgba(0,0,0,0.3)"
-                    value={password}
-                    onChangeText={setPassword}
-                    className="bg-card border border-black/10 rounded-2xl px-4 py-3.5 text-base font-sans text-primary"
+                    keyboardType="number-pad"
+                    placeholder="123456"
+                    placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                    value={code}
+                    onChangeText={setCode}
+                    className={`auth-input text-center tracking-widest text-xl ${hasCodeError ? "auth-input-error" : ""}`}
                   />
+                  {errors?.fields?.code ? (
+                    <Text className="auth-error">
+                      {errors.fields.code.message}
+                    </Text>
+                  ) : null}
                 </View>
 
                 <TouchableOpacity
-                  onPress={handleSignUp}
+                  onPress={handleVerify}
                   disabled={isSubmitting}
                   activeOpacity={0.8}
-                  className="bg-primary rounded-2xl py-4 items-center justify-center mt-2 shadow-sm"
+                  className={`auth-button ${isSubmitting ? "auth-button-disabled" : ""}`}
                 >
-                  {fetchStatus === "fetching" ? (
-                    <ActivityIndicator color="#fff" />
+                  {isSubmitting ? (
+                    <ActivityIndicator color="#081126" />
                   ) : (
-                    <Text className="text-white font-sans-bold text-base">
-                      Continuar
-                    </Text>
+                    <Text className="auth-button-text">Confirmar e Entrar</Text>
                   )}
                 </TouchableOpacity>
-              </View>
-            </>
-          ) : (
-            <View className="gap-4">
-              <View>
-                <Text className="text-sm font-sans-medium text-primary mb-1.5">
-                  Código de Verificação
-                </Text>
-                <TextInput
-                  keyboardType="number-pad"
-                  placeholder="123456"
-                  placeholderTextColor="rgba(0,0,0,0.3)"
-                  value={code}
-                  onChangeText={setCode}
-                  className="bg-card border border-black/10 rounded-2xl px-4 py-3.5 font-sans text-primary text-center tracking-widest text-xl"
-                />
-              </View>
 
-              <TouchableOpacity
-                onPress={handleVerify}
-                disabled={isSubmitting}
-                activeOpacity={0.8}
-                className="bg-primary rounded-2xl py-4 items-center justify-center mt-2 shadow-sm"
-              >
-                {fetchStatus === "fetching" ? (
-                  <ActivityIndicator color="#fff" />
-                ) : (
-                  <Text className="text-white font-sans-bold text-base">
-                    Confirmar e Entrar
+                <TouchableOpacity
+                  onPress={() => setPendingVerification(false)}
+                  activeOpacity={0.8}
+                  className="auth-secondary-button"
+                >
+                  <Text className="auth-secondary-button-text">
+                    Voltar para o cadastro
                   </Text>
-                )}
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => setPendingVerification(false)}
-                className="py-2 items-center"
-              >
-                <Text className="text-sm font-sans-medium text-muted-foreground">
-                  Voltar para o cadastro
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
 
           {/* Gate 10: bot protection captcha mount point */}
           <View nativeID="clerk-captcha" />
 
-          <View className="mt-8 flex-row justify-center items-center gap-1.5">
-            <Text className="text-sm font-sans text-muted-foreground">
-              Já tem uma conta?
-            </Text>
+          <View className="auth-link-row">
+            <Text className="auth-link-copy">Já tem uma conta?</Text>
             <Link href="/(auth)/sign-in" asChild>
               <TouchableOpacity>
-                <Text className="text-sm font-sans-bold text-accent">
-                  Entrar
-                </Text>
+                <Text className="auth-link">Entrar</Text>
               </TouchableOpacity>
             </Link>
           </View>

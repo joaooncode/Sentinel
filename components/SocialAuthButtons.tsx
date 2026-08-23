@@ -51,12 +51,12 @@ export default function SocialAuthButtons({
 
   return (
     <>
-      <View className="gap-3 mb-6">
+      <View className="gap-3">
         <TouchableOpacity
           onPress={() => handleSSO("oauth_google")}
           disabled={isBusy}
           activeOpacity={0.8}
-          className="flex-row items-center justify-center bg-card border border-black/10 rounded-2xl py-3.5 px-4 shadow-sm"
+          className="flex-row items-center justify-center rounded-2xl border border-border bg-background px-4 py-3.5 shadow-sm"
         >
           {ssoLoading === "google" ? (
             <ActivityIndicator size="small" color="#081126" />
@@ -74,7 +74,7 @@ export default function SocialAuthButtons({
           onPress={() => handleSSO("oauth_github")}
           disabled={isBusy}
           activeOpacity={0.8}
-          className="flex-row items-center justify-center bg-card border border-black/10 rounded-2xl py-3.5 px-4 shadow-sm"
+          className="flex-row items-center justify-center rounded-2xl border border-border bg-background px-4 py-3.5 shadow-sm"
         >
           {ssoLoading === "github" ? (
             <ActivityIndicator size="small" color="#081126" />
@@ -89,12 +89,10 @@ export default function SocialAuthButtons({
         </TouchableOpacity>
       </View>
 
-      <View className="flex-row items-center my-4">
-        <View className="flex-1 h-px bg-black/10" />
-        <Text className="mx-3 text-xs font-sans-medium text-muted-foreground uppercase">
-          ou com e-mail
-        </Text>
-        <View className="flex-1 h-px bg-black/10" />
+      <View className="auth-divider-row">
+        <View className="auth-divider-line" />
+        <Text className="auth-divider-text">ou com e-mail</Text>
+        <View className="auth-divider-line" />
       </View>
     </>
   );
