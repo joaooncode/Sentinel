@@ -1,8 +1,107 @@
-import { icons } from "@/constants/icons";
+import { icons } from "./icons";
 
-export const tabs = [
-  { name: "index", title: "Home", icon: icons.home },
-  { name: "subscriptions", title: "Subscriptions", icon: icons.wallet },
+export const tabs: AppTab[] = [
+  { name: "index", title: "Início", icon: icons.home },
+  { name: "subscriptions", title: "Assinaturas", icon: icons.wallet },
   { name: "insights", title: "Insights", icon: icons.activity },
-  { name: "settings", title: "Settings", icon: icons.setting },
+  { name: "settings", title: "Configurações", icon: icons.setting },
+];
+
+export const HOME_USER = {
+  name: "João | Desenvolvedor",
+};
+
+export const HOME_BALANCE = {
+  amount: 2489.48,
+  nextRenewalDate: "2026-03-18T09:00:00.000Z",
+};
+
+export const UPCOMING_SUBSCRIPTIONS: UpcomingSubscription[] = [
+  {
+    id: "spotify",
+    icon: icons.spotify,
+    name: "Spotify",
+    price: 20.99,
+    currency: "BRL",
+    daysLeft: 2,
+  },
+  {
+    id: "notion",
+    icon: icons.notion,
+    name: "Notion",
+    price: 12.0,
+    currency: "BRL",
+    daysLeft: 4,
+  },
+  {
+    id: "figma",
+    icon: icons.figma,
+    name: "Figma",
+    price: 15.0,
+    currency: "BRL",
+    daysLeft: 6,
+  },
+];
+
+export const HOME_SUBSCRIPTIONS: Subscription[] = [
+  {
+    id: "adobe-creative-cloud",
+    icon: icons.adobe,
+    name: "Adobe Creative Cloud",
+    plan: "Plano Teams",
+    category: "Design",
+    paymentMethod: "Visa final 8530",
+    status: "ativo",
+    startDate: "2025-03-20T10:00:00.000Z",
+    price: 77.49,
+    currency: "BRL",
+    billing: "Mensal",
+    renewalDate: "2026-03-20T10:00:00.000Z",
+    color: "#f5c542",
+  },
+  {
+    id: "github-pro",
+    icon: icons.github,
+    name: "GitHub Pro",
+    plan: "Desenvolvedor",
+    category: "Ferramentas Dev",
+    paymentMethod: "Mastercard final 2408",
+    status: "ativo",
+    startDate: "2024-11-24T10:00:00.000Z",
+    price: 9.99,
+    currency: "BRL",
+    billing: "Mensal",
+    renewalDate: "2026-03-24T10:00:00.000Z",
+    color: "#e8def8",
+  },
+  {
+    id: "claude-pro",
+    icon: icons.claude,
+    name: "Claude Pro",
+    plan: "Plano Pro",
+    category: "Ferramentas IA",
+    paymentMethod: "Amex final 1010",
+    status: "pausado",
+    startDate: "2025-06-27T10:00:00.000Z",
+    price: 20.0,
+    currency: "BRL",
+    billing: "Mensal",
+    renewalDate: "2026-03-27T10:00:00.000Z",
+    color: "#b8d4e3",
+  },
+  {
+    id: "canva-pro",
+    icon: icons.canva,
+    name: "Canva Pro",
+    plan: "Acesso Anual",
+    category: "Design",
+    paymentMethod: "Visa final 7784",
+    status: "cancelado",
+    startDate: "2024-04-02T10:00:00.000Z",
+    price: 119.99,
+    currency: "BRL",
+    billing: "Anual",
+    renewalDate: "2026-04-02T10:00:00.000Z",
+    color: "#b8e8d0",
+  },
 ];
