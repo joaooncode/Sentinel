@@ -27,7 +27,7 @@ export function formatCurrency(
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(numericValue);
-  } catch (error) {
+  } catch {
     // Fallback manual formatting in case Intl.NumberFormat encounters an unsupported currency code or environment error
     const [integerPart, decimalPart] = Math.abs(numericValue)
       .toFixed(2)
