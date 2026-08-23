@@ -28,7 +28,7 @@ export default function Index() {
         <Image source={icons.add} className="home-add-icon" />
       </View>
       <View className="home-balance-card">
-        <View className="home-balance-label">Balance</View>
+        <Text className="home-balance-label">Saldo</Text>
         <View className="home-balance-row">
           <Text className="home-balance-amount">
             {formatCurrency(HOME_BALANCE.amount)}
@@ -39,10 +39,10 @@ export default function Index() {
         </View>
       </View>
       <View>
-        <ListHeading title="Upcoming" />
+        <ListHeading title="Próximas assinaturas" />
         <FlatList
           ListEmptyComponent={
-            <Text className="home-empty-state">No upcoming subscriptions</Text>
+            <Text className="home-empty-state">Nenhuma assinatura próxima</Text>
           }
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
@@ -50,7 +50,7 @@ export default function Index() {
           data={UPCOMING_SUBSCRIPTIONS}
           renderItem={({ item }) => <UpcomingSubscriptionCard {...item} />}
         />
-        <ListHeading title="All subscription" />
+        <ListHeading title="Todas as assinaturas" />
       </View>
     </SafeAreaView>
   );

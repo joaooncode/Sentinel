@@ -23,7 +23,7 @@ const UpcomingSubscriptionCard = ({
             {formatCurrency(price, currency)}
           </Text>
           <Text className="upcoming-meta" numberOfLines={1}>
-            In {daysLeft} {daysLeft === 1 ? "day" : "days"}
+            Em {daysLeft} {daysLeft === 1 ? "dia" : "dias"}
           </Text>
         </View>
       </View>

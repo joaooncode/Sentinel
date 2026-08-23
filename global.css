@@ -107,7 +107,7 @@
     }
 
     .list-title {
-        @apply text-2xl font-sans-bold text-primary;
+        @apply text-xl font-sans-bold text-primary;
     }
 
     .list-action {

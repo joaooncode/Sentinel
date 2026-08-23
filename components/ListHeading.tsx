@@ -6,7 +6,7 @@ const ListHeading = ({ title }: ListHeadingProps) => {
     <View className="list-head">
       <Text className="list-title">{title}</Text>
       <TouchableOpacity className="list-action">
-        <Text className="list-action-text">View All</Text>
+        <Text className="list-action-text">Ver todos</Text>
       </TouchableOpacity>
     </View>
   );
