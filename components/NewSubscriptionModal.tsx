@@ -23,6 +23,7 @@ import {
   newSubscriptionSchema,
 } from "@/schemas/subscription";
 import { useSubscriptions } from "@/context/SubscriptionContext";
+import SubscriptionIcon from "@/components/SubscriptionIcon";
 
 interface NewSubscriptionModalProps {
   visible: boolean;
@@ -188,19 +189,30 @@ export default function NewSubscriptionModal({
             {/* Campo: Nome */}
             <View style={{ gap: 6 }}>
               <Text className="text-sm font-sans-bold text-primary">Nome</Text>
-              <TextInput
-                value={name}
-                onChangeText={(text) => {
-                  setName(text);
-                  setErrors((prev) => ({ ...prev, name: undefined }));
-                }}
-                placeholder="Nome da assinatura"
-                placeholderTextColor="rgba(0, 0, 0, 0.35)"
-                className={clsx(
-                  "rounded-2xl border border-border bg-card px-4 py-4 text-base font-sans-medium text-primary",
-                  errors.name && "border-destructive",
-                )}
-              />
+              <View className="flex-row items-center gap-3">
+                {/* Preview do ícone/logo inferido em tempo real */}
+                <View className="size-14 items-center justify-center rounded-2xl border border-border bg-card">
+                  <SubscriptionIcon
+                    name={name}
+                    lucideIcon={category}
+                    size={26}
+                  />
+                </View>
+                <TextInput
+                  value={name}
+                  onChangeText={(text) => {
+                    setName(text);
+                    setErrors((prev) => ({ ...prev, name: undefined }));
+                  }}
+                  placeholder="Nome da assinatura"
+                  placeholderTextColor="rgba(0, 0, 0, 0.35)"
+                  style={{ flex: 1 }}
+                  className={clsx(
+                    "rounded-2xl border border-border bg-card px-4 py-4 text-base font-sans-medium text-primary",
+                    errors.name && "border-destructive",
+                  )}
+                />
+              </View>
               {errors.name ? (
                 <Text className="text-xs font-sans-medium text-destructive">
                   {errors.name}

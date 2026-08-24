@@ -7,6 +7,11 @@ import React, {
 } from "react";
 import { ALL_SUBSCRIPTIONS, UPCOMING_SUBSCRIPTIONS } from "@/constants/data";
 import { icons } from "@/constants/icons";
+import {
+  resolveSubscriptionIcon,
+  resolveSubscriptionIconName,
+} from "@/constants/subscriptionIcons";
+import { resolveBrandInfo } from "@/constants/brandIcons";
 import type { Subscription, UpcomingSubscription } from "@/types/subscription";
 import type { NewSubscriptionFormData } from "@/schemas/subscription";
 import dayjs from "dayjs";
@@ -35,25 +40,13 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const addSubscription = useCallback((data: NewSubscriptionFormData) => {
-    // Resolver ícone
-    let iconSource = icons.plus;
-    if (data.iconKey && data.iconKey in icons) {
-      iconSource = icons[data.iconKey as keyof typeof icons];
-    } else {
-      // Tenta inferir pelo nome
-      const lowerName = data.name.toLowerCase();
-      if (lowerName.includes("spotify")) iconSource = icons.spotify;
-      else if (lowerName.includes("notion")) iconSource = icons.notion;
-      else if (lowerName.includes("figma")) iconSource = icons.figma;
-      else if (lowerName.includes("chatgpt") || lowerName.includes("openai"))
-        iconSource = icons.openai;
-      else if (lowerName.includes("claude")) iconSource = icons.claude;
-      else if (lowerName.includes("adobe")) iconSource = icons.adobe;
-      else if (lowerName.includes("github")) iconSource = icons.github;
-      else if (lowerName.includes("canva")) iconSource = icons.canva;
-      else if (lowerName.includes("dropbox")) iconSource = icons.dropbox;
-      else if (lowerName.includes("medium")) iconSource = icons.medium;
-    }
+    // 1. Tentar resolver logo oficial via Simple Icons CDN
+    const matchedBrand = resolveBrandInfo(data.name);
+
+    // 2. Se não for marca conhecida, resolver ícone por categoria (Lucide)
+    const fallbackLucideKey = !matchedBrand
+      ? resolveSubscriptionIconName(data.name, data.category)
+      : undefined;
 
     // Normalizar data para formato ISO
     let renewalIso = dayjs().add(1, "month").toISOString();
@@ -80,8 +73,12 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({
       startDate: dayjs().toISOString(),
       renewalDate: renewalIso,
       currency: "BRL",
-      icon: iconSource,
-      color: data.color || "#8fd1bd",
+      icon: icons.plus,
+      brandLogoUri: matchedBrand?.logoUri,
+      brandHex: matchedBrand?.hex,
+      lucideIcon: fallbackLucideKey,
+      color:
+        data.color || (matchedBrand ? `#${matchedBrand.hex}18` : "#8fd1bd"),
     };
 
     setSubscriptions((prev) => [newSub, ...prev]);

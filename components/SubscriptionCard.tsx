@@ -1,17 +1,22 @@
 import React from "react";
-import { Image, Pressable, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import {
   formatCurrency,
   formatStatusLabel,
   formatSubscriptionDateTime,
 } from "@/lib/utils";
 import { clsx } from "clsx";
+import SubscriptionIcon from "@/components/SubscriptionIcon";
 
 const SubscriptionCard = ({
   name,
   price,
   currency,
   icon,
+  lucideIcon,
+  brandLogoUri,
+  brandSvgPath,
+  brandHex,
   billing,
   color,
   category,
@@ -31,7 +36,15 @@ const SubscriptionCard = ({
     >
       <View className="sub-head">
         <View className="sub-main">
-          <Image source={icon} className="sub-icon" />
+          <SubscriptionIcon
+            icon={icon}
+            name={name}
+            lucideIcon={lucideIcon}
+            brandLogoUri={brandLogoUri}
+            brandHex={brandHex}
+            size={28}
+            className="sub-icon"
+          />
           <View className="sub-copy">
             <Text numberOfLines={1} className="sub-title">
               {name}

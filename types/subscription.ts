@@ -3,6 +3,10 @@ import type { ImageSourcePropType } from "react-native";
 export interface Subscription {
   id: string;
   icon: ImageSourcePropType;
+  lucideIcon?: string;
+  brandLogoUri?: string;
+  brandSvgPath?: string;
+  brandHex?: string;
   name: string;
   plan?: string;
   category?: string;
@@ -27,6 +31,10 @@ export interface SubscriptionCardProps extends Omit<Subscription, "id"> {
 export interface UpcomingSubscription {
   id: string;
   icon: ImageSourcePropType;
+  lucideIcon?: string;
+  brandLogoUri?: string;
+  brandSvgPath?: string;
+  brandHex?: string;
   name: string;
   price: number;
   currency?: string;
