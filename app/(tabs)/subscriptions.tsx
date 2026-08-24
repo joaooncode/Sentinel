@@ -92,7 +92,7 @@ export default function Subscriptions() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-background px-5 pt-3">
+    <SafeAreaView className="flex-1 p-5 bg-background">
       <FlatList
         data={filteredSubscriptions}
         keyExtractor={(item) => item.id}
