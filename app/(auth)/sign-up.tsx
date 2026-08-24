@@ -153,7 +153,9 @@ export default function SignUpScreen() {
                     placeholderTextColor="rgba(0, 0, 0, 0.4)"
                     value={code}
                     onChangeText={setCode}
-                    className={`auth-input text-center tracking-widest text-xl ${hasCodeError ? "auth-input-error" : ""}`}
+                    textAlign="center"
+                    style={{ textAlign: "center" }}
+                    className={`auth-input tracking-widest text-xl ${hasCodeError ? "auth-input-error" : ""}`}
                   />
                   {signUpErrors?.fields?.code ? (
                     <Text className="auth-error">

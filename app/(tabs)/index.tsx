@@ -1,4 +1,4 @@
-import { FlatList, Image, Text, View } from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import "../../global.css";
 
 import { useUser } from "@clerk/expo";
@@ -6,26 +6,26 @@ import { styled } from "nativewind";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 import images from "@/constants/images";
 import { icons } from "@/constants/icons";
-import {
-  HOME_BALANCE,
-  HOME_SUBSCRIPTIONS,
-  HOME_USER,
-  UPCOMING_SUBSCRIPTIONS,
-} from "@/constants/data";
+import { HOME_BALANCE, HOME_USER } from "@/constants/data";
 import { formatCurrency } from "@/lib/utils";
 import dayjs from "dayjs";
 import ListHeading from "@/components/ListHeading";
 import UpcomingSubscriptionCard from "@/components/UpcomingSubscriptionCard";
 import { useState } from "react";
 import SubscriptionCard from "@/components/SubscriptionCard";
+import { useSubscriptions } from "@/context/SubscriptionContext";
+import NewSubscriptionModal from "@/components/NewSubscriptionModal";
 
 const SafeAreaView = styled(RNSafeAreaView);
 
 export default function Index() {
   const { user } = useUser();
+  const { subscriptions, upcomingSubscriptions, cancelSubscription } =
+    useSubscriptions();
   const [expandedSubscriptionId, setExpandedSubscriptionId] = useState<
     string | null
   >(null);
+  const [isNewSubModalOpen, setIsNewSubModalOpen] = useState(false);
 
   const displayName =
     user?.firstName ||
@@ -48,7 +48,13 @@ export default function Index() {
                 />
                 <Text className="home-user-name">{displayName}</Text>
               </View>
-              <Image source={icons.add} className="home-add-icon" />
+              <TouchableOpacity
+                onPress={() => setIsNewSubModalOpen(true)}
+                activeOpacity={0.7}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <Image source={icons.add} className="home-add-icon" />
+              </TouchableOpacity>
             </View>
             <View className="home-balance-card">
               <Text className="home-balance-label">Saldo</Text>
@@ -72,7 +78,7 @@ export default function Index() {
                 keyExtractor={(item) => item.id}
                 showsHorizontalScrollIndicator={false}
                 horizontal
-                data={UPCOMING_SUBSCRIPTIONS}
+                data={upcomingSubscriptions}
                 renderItem={({ item }) => (
                   <UpcomingSubscriptionCard {...item} />
                 )}
@@ -83,7 +89,7 @@ export default function Index() {
         )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={<Text>Você ainda não tem assinaturas.</Text>}
-        data={HOME_SUBSCRIPTIONS}
+        data={subscriptions}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <SubscriptionCard
@@ -94,9 +100,15 @@ export default function Index() {
                 currentId === item.id ? null : item.id,
               )
             }
+            onCancelPress={() => cancelSubscription(item.id)}
           />
         )}
         contentContainerClassName="pb-20"
+      />
+
+      <NewSubscriptionModal
+        visible={isNewSubModalOpen}
+        onClose={() => setIsNewSubModalOpen(false)}
       />
     </SafeAreaView>
   );
