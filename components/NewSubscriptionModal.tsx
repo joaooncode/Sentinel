@@ -42,6 +42,9 @@ export default function NewSubscriptionModal({
   const [billing, setBilling] = useState<BillingCycle>("Mensal");
   const [category, setCategory] = useState<string>("Produtividade");
   const [customCategory, setCustomCategory] = useState("");
+  const [plan, setPlan] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [renewalDate, setRenewalDate] = useState("");
 
   // Erros e status de envio
   const [errors, setErrors] = useState<FormValidationErrors>({});
@@ -62,6 +65,9 @@ export default function NewSubscriptionModal({
     setBilling("Mensal");
     setCategory("Produtividade");
     setCustomCategory("");
+    setPlan("");
+    setPaymentMethod("");
+    setRenewalDate("");
     setErrors({});
     setIsSubmitting(false);
     onClose();
@@ -81,6 +87,9 @@ export default function NewSubscriptionModal({
       price: isNaN(numericPrice) ? 0 : numericPrice,
       billing,
       category: finalCategory,
+      plan: plan.trim() || undefined,
+      paymentMethod: paymentMethod.trim() || undefined,
+      renewalDate: renewalDate.trim() || undefined,
     };
 
     const validation = newSubscriptionSchema.safeParse(rawFormData);
@@ -216,6 +225,100 @@ export default function NewSubscriptionModal({
               {errors.price ? (
                 <Text className="text-xs font-sans-medium text-destructive">
                   {errors.price}
+                </Text>
+              ) : null}
+            </View>
+
+            {/* Campo: Plano */}
+            <View style={{ gap: 6 }}>
+              <Text className="text-sm font-sans-bold text-primary">
+                Plano{" "}
+                <Text className="font-sans-regular text-muted-foreground">
+                  (opcional)
+                </Text>
+              </Text>
+              <TextInput
+                value={plan}
+                onChangeText={(text) => {
+                  setPlan(text);
+                  setErrors((prev) => ({ ...prev, plan: undefined }));
+                }}
+                placeholder="Ex.: Individual, Família, Pro..."
+                placeholderTextColor="rgba(0, 0, 0, 0.35)"
+                className={clsx(
+                  "rounded-2xl border border-border bg-card px-4 py-4 text-base font-sans-medium text-primary",
+                  errors.plan && "border-destructive",
+                )}
+              />
+              {errors.plan ? (
+                <Text className="text-xs font-sans-medium text-destructive">
+                  {errors.plan}
+                </Text>
+              ) : null}
+            </View>
+
+            {/* Campo: Método de Pagamento */}
+            <View style={{ gap: 6 }}>
+              <Text className="text-sm font-sans-bold text-primary">
+                Método de Pagamento{" "}
+                <Text className="font-sans-regular text-muted-foreground">
+                  (opcional)
+                </Text>
+              </Text>
+              <TextInput
+                value={paymentMethod}
+                onChangeText={(text) => {
+                  setPaymentMethod(text);
+                  setErrors((prev) => ({ ...prev, paymentMethod: undefined }));
+                }}
+                placeholder="Ex.: Cartão de crédito, Boleto..."
+                placeholderTextColor="rgba(0, 0, 0, 0.35)"
+                className={clsx(
+                  "rounded-2xl border border-border bg-card px-4 py-4 text-base font-sans-medium text-primary",
+                  errors.paymentMethod && "border-destructive",
+                )}
+              />
+              {errors.paymentMethod ? (
+                <Text className="text-xs font-sans-medium text-destructive">
+                  {errors.paymentMethod}
+                </Text>
+              ) : null}
+            </View>
+
+            {/* Campo: Data de Renovação */}
+            <View style={{ gap: 6 }}>
+              <Text className="text-sm font-sans-bold text-primary">
+                Data de Renovação{" "}
+                <Text className="font-sans-regular text-muted-foreground">
+                  (opcional)
+                </Text>
+              </Text>
+              <TextInput
+                value={renewalDate}
+                onChangeText={(text) => {
+                  // Máscara DD/MM/AAAA
+                  const digits = text.replace(/\D/g, "").slice(0, 8);
+                  let masked = digits;
+                  if (digits.length > 4) {
+                    masked = `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+                  } else if (digits.length > 2) {
+                    masked = `${digits.slice(0, 2)}/${digits.slice(2)}`;
+                  }
+                  setRenewalDate(masked);
+                  setErrors((prev) => ({ ...prev, renewalDate: undefined }));
+                }}
+                keyboardType="numeric"
+                placeholder="DD/MM/AAAA"
+                placeholderTextColor="rgba(0, 0, 0, 0.35)"
+                maxLength={10}
+                className={clsx(
+                  "rounded-2xl border border-border bg-card px-4 py-4 text-base font-sans-medium text-primary",
+                  errors.renewalDate && "border-destructive",
+                )}
+              />
+              {errors.renewalDate ? (
+                <Text className="text-xs font-sans-medium text-destructive">
+                  {errors.renewalDate}
                 </Text>
               ) : null}
             </View>
