@@ -4,6 +4,14 @@ Read the exact versioned docs at https://docs.expo.dev/versions/v54.0.0/ before 
 
 ---
 
+# Local Git & Remote Push Rules
+
+- **Restrição de Push Remoto**: **NUNCA** faça push para o repositório remoto de branches como `feat/*`, `fix/*`, `chore/*`, `refactor/*`, etc.
+- **Branches permitidas para o remoto**: O envio (`git push`) é **estritamente permitido apenas para as branches `development` e `main`**.
+- Se o trabalho for desenvolvido em uma branch local auxiliar, integre-a à `development` antes de enviar ao repositório remoto.
+
+---
+
 # Custom Agent Commands & Shortcuts
 
 Whenever the user starts a prompt with any of the following shortcuts, immediately activate the `.agents/skills/git-workflow/SKILL.md` skill and execute the workflow:
@@ -15,8 +23,9 @@ Whenever the user starts a prompt with any of the following shortcuts, immediate
 
 - `/pr [título/descrição opcional]`:
   1. Verificar status atual da branch (`git status`, `git log`).
-  2. Fazer push para a branch remota (`git push -u origin HEAD`).
-  3. Criar o Pull Request utilizando `gh pr create` estruturado com descrição, lista de alterações, instruções de teste e labels adequadas (`--label "enhancement"`, `--label "bug"`, etc.).
+  2. Garantir que a branch atual é `development` ou `main` antes do push (nunca fazer push de branches `feat/`, `fix/`, `chore/`).
+  3. Fazer push para a branch remota (`git push -u origin HEAD`).
+  4. Criar o Pull Request utilizando `gh pr create` estruturado com descrição, lista de alterações, instruções de teste e labels adequadas (`--label "enhancement"`, `--label "bug"`, etc.).
 
 - `/commit-pr [mensagem/instrução opcional]`:
   1. Realizar o fluxo do `/commit` seguido imediatamente pelo fluxo do `/pr`.

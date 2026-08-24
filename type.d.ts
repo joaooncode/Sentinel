@@ -1,58 +1,31 @@
-import type { ImageSourcePropType } from "react-native";
+import type {
+  Subscription as ISubscription,
+  SubscriptionCardProps as ISubscriptionCardProps,
+  UpcomingSubscription as IUpcomingSubscription,
+  UpcomingSubscriptionCardProps as IUpcomingSubscriptionCardProps,
+  ListHeadingProps as IListHeadingProps,
+} from "./types/subscription";
+import type {
+  AppTab as IAppTab,
+  TabIconProps as ITabIconProps,
+} from "./types/navigation";
+import type {
+  SocialAuthButtonsProps as ISocialAuthButtonsProps,
+  SocialAuthStrategy as ISocialAuthStrategy,
+} from "./types/auth";
 
 declare global {
-  interface AppTab {
-    name: string;
-    title: string;
-    icon: ImageSourcePropType;
-  }
-
-  interface TabIconProps {
-    focused: boolean;
-    icon: ImageSourcePropType;
-  }
-
-  interface Subscription {
-    id: string;
-    icon: ImageSourcePropType;
-    name: string;
-    plan?: string;
-    category?: string;
-    paymentMethod?: string;
-    status?: string;
-    startDate?: string;
-    price: number;
-    currency?: string;
-    billing: string;
-    frequency?: string;
-    renewalDate?: string;
-    color?: string;
-  }
-
-  interface SubscriptionCardProps extends Omit<Subscription, "id"> {
-    expanded: boolean;
-    onPress: () => void;
-    onCancelPress?: () => void;
-    isCancelling?: boolean;
-  }
-
-  interface UpcomingSubscription {
-    id: string;
-    icon: ImageSourcePropType;
-    name: string;
-    price: number;
-    currency?: string;
-    daysLeft: number;
-  }
-
-  interface UpcomingSubscriptionCardProps extends Omit<
-    UpcomingSubscription,
-    "id"
-  > {}
-
-  interface ListHeadingProps {
-    title: string;
-  }
+  type AppTab = IAppTab;
+  type TabIconProps = ITabIconProps;
+  type Subscription = ISubscription;
+  type SubscriptionCardProps = ISubscriptionCardProps;
+  type UpcomingSubscription = IUpcomingSubscription;
+  type UpcomingSubscriptionCardProps = IUpcomingSubscriptionCardProps;
+  type ListHeadingProps = IListHeadingProps;
+  type SocialAuthButtonsProps = ISocialAuthButtonsProps;
+  type SocialAuthStrategy = ISocialAuthStrategy;
 }
 
-export {};
+export * from "./types/subscription";
+export * from "./types/navigation";
+export * from "./types/auth";

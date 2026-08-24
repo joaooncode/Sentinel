@@ -43,28 +43,30 @@ export const formatCurrency = (
 };
 
 /**
- * Formats a date string into a standard display date (MM/DD/YYYY).
+ * Formats a date string into a standard display date (DD/MM/YYYY).
  *
  * @param value - The date string to format.
- * @returns Formatted date string or "Not provided" if invalid or missing.
+ * @returns Formatted date string or "Não fornecido" if invalid or missing.
  */
 export const formatSubscriptionDateTime = (value?: string): string => {
-  if (!value) return "Not provided";
-  const parsedDate = dayjs(value);
+  const trimmed = value?.trim();
+  if (!trimmed) return "Não fornecido";
+  const parsedDate = dayjs(trimmed);
   return parsedDate.isValid()
-    ? parsedDate.format("MM/DD/YYYY")
-    : "Not provided";
+    ? parsedDate.format("DD/MM/YYYY")
+    : "Não fornecido";
 };
 
 /**
  * Capitalizes the first letter of a status string.
  *
  * @param value - The status string to format.
- * @returns Capitalized status label or "Unknown" if missing.
+ * @returns Capitalized status label or "Não fornecido" if missing.
  */
 export const formatStatusLabel = (value?: string): string => {
-  if (!value) return "Unknown";
-  return value.charAt(0).toUpperCase() + value.slice(1);
+  const trimmed = value?.trim();
+  if (!trimmed) return "Não fornecido";
+  return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
 };
 
 export default {

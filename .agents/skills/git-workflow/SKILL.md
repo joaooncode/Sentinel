@@ -43,16 +43,11 @@ git commit -m "feat(auth): adicionar suporte a login biométrico com expo-local-
 
 ---
 
-## 2. Gerenciamento de Branches
+## 2. Gerenciamento de Branches & Restrições de Envio
 
-- Crie branches a partir da branch base atualizada (`main` / `develop`):
-  ```bash
-  git checkout -b <tipo>/<nome-da-feature-ou-fix>
-  ```
-  Exemplos:
-  - `feat/biometric-auth`
-  - `fix/camera-permission-crash`
-  - `refactor/navigation-flow`
+- **Restrição de Push Remoto**: **NUNCA** envie (`git push`) branches do tipo `feat/*`, `fix/*`, `chore/*`, `refactor/*` para o repositório remoto.
+- **Branches Remotas Permitidas**: O envio (`git push`) para o repositório remoto é restrito **exclusivamente a `development` e `main`**.
+- Branches auxiliares (`feat/...`, `fix/...`) devem ser usadas apenas localmente e mescladas na `development` antes de enviar ao repositório remoto.
 
 ---
 
@@ -60,7 +55,8 @@ git commit -m "feat(auth): adicionar suporte a login biométrico com expo-local-
 
 Ao finalizar uma tarefa e ter os commits organizados:
 
-1. **Enviar as alterações para o repositório remoto**:
+1. **Garantir a branch correta e enviar ao remoto**:
+   - Certifique-se de estar na branch `development` (ou `main`).
 
    ```bash
    git push -u origin HEAD
