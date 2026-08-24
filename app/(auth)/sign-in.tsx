@@ -9,63 +9,32 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSignIn } from "@clerk/expo";
-import { Link, useRouter } from "expo-router";
+import { Link } from "expo-router";
 import { styled } from "nativewind";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 import SocialAuthButtons from "@/components/SocialAuthButtons";
 
+import { useAuthFlow } from "@/hooks/useAuthFlow";
+
 const SafeAreaView = styled(RNSafeAreaView);
 
 export default function SignInScreen() {
-  const { signIn, errors, fetchStatus } = useSignIn();
-  const router = useRouter();
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const isSubmitting = fetchStatus === "fetching";
+  const {
+    loginWithPassword,
+    errorMessage,
+    setErrorMessage,
+    isSignInSubmitting,
+    signInErrors,
+  } = useAuthFlow();
 
   const handleSignIn = async () => {
-    if (!emailAddress || !password) {
-      setErrorMessage("Preencha todos os campos.");
-      return;
-    }
-    setErrorMessage("");
-
-    try {
-      const { error } = await signIn.password({
-        emailAddress,
-        password,
-      });
-
-      if (error) {
-        setErrorMessage(
-          error.message || "Erro ao entrar. Verifique suas credenciais.",
-        );
-        return;
-      }
-
-      if (signIn.status === "complete") {
-        await signIn.finalize({
-          navigate: ({ session, decorateUrl }) => {
-            if (session?.currentTask) return;
-            const url = decorateUrl("/");
-            if (url.startsWith("http")) {
-              window.location.href = url;
-            } else {
-              router.replace("/(tabs)");
-            }
-          },
-        });
-      }
-    } catch (err: any) {
-      setErrorMessage(err?.message || "Ocorreu um erro ao entrar.");
-    }
+    await loginWithPassword(emailAddress, password);
   };
 
-  const hasIdentifierError = Boolean(errors?.fields?.identifier);
-  const hasPasswordError = Boolean(errors?.fields?.password);
+  const hasIdentifierError = Boolean(signInErrors?.fields?.identifier);
+  const hasPasswordError = Boolean(signInErrors?.fields?.password);
 
   return (
     <SafeAreaView className="auth-safe-area">
@@ -105,7 +74,7 @@ export default function SignInScreen() {
             <SocialAuthButtons
               mode="signIn"
               onError={setErrorMessage}
-              disabled={isSubmitting}
+              disabled={isSignInSubmitting}
             />
 
             <View className="auth-form">
@@ -120,9 +89,9 @@ export default function SignInScreen() {
                   onChangeText={setEmailAddress}
                   className={`auth-input ${hasIdentifierError ? "auth-input-error" : ""}`}
                 />
-                {errors?.fields?.identifier ? (
+                {signInErrors?.fields?.identifier ? (
                   <Text className="auth-error">
-                    {errors.fields.identifier.message}
+                    {signInErrors.fields.identifier.message}
                   </Text>
                 ) : null}
               </View>
@@ -137,20 +106,20 @@ export default function SignInScreen() {
                   onChangeText={setPassword}
                   className={`auth-input ${hasPasswordError ? "auth-input-error" : ""}`}
                 />
-                {errors?.fields?.password ? (
+                {signInErrors?.fields?.password ? (
                   <Text className="auth-error">
-                    {errors.fields.password.message}
+                    {signInErrors.fields.password.message}
                   </Text>
                 ) : null}
               </View>
 
               <TouchableOpacity
                 onPress={handleSignIn}
-                disabled={isSubmitting}
+                disabled={isSignInSubmitting}
                 activeOpacity={0.8}
-                className={`auth-button ${isSubmitting ? "auth-button-disabled" : ""}`}
+                className={`auth-button ${isSignInSubmitting ? "auth-button-disabled" : ""}`}
               >
-                {isSubmitting ? (
+                {isSignInSubmitting ? (
                   <ActivityIndicator color="#081126" />
                 ) : (
                   <Text className="auth-button-text">Entrar</Text>

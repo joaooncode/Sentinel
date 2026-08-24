@@ -1,20 +1,29 @@
 declare module "*.png" {
-  const value: any;
+  import type { ImageSourcePropType } from "react-native";
+  const value: ImageSourcePropType;
   export default value;
 }
+
 declare module "*.jpg" {
-  const value: any;
+  import type { ImageSourcePropType } from "react-native";
+  const value: ImageSourcePropType;
   export default value;
 }
+
 declare module "*.jpeg" {
-  const value: any;
+  import type { ImageSourcePropType } from "react-native";
+  const value: ImageSourcePropType;
   export default value;
 }
+
 declare module "*.svg" {
-  const value: any;
+  import type { ImageSourcePropType } from "react-native";
+  const value: ImageSourcePropType;
   export default value;
 }
+
 declare module "*.gif" {
-  const value: any;
+  import type { ImageSourcePropType } from "react-native";
+  const value: ImageSourcePropType;
   export default value;
 }

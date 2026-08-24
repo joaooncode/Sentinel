@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { useSSO } from "@clerk/expo";
 import { useRouter } from "expo-router";
+import * as Linking from "expo-linking";
 import { Ionicons } from "@expo/vector-icons";
 
 type SocialAuthButtonsProps = {
@@ -26,8 +27,10 @@ export default function SocialAuthButtons({
     setSsoLoading(strategy === "oauth_google" ? "google" : "github");
 
     try {
+      const redirectUrl = Linking.createURL("/(tabs)", { scheme: "sentinel" });
       const { createdSessionId, setActive } = await startSSOFlow({
         strategy,
+        redirectUrl,
       });
 
       if (createdSessionId && setActive) {

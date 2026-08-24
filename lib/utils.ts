@@ -43,17 +43,17 @@ export const formatCurrency = (
 };
 
 /**
- * Formats a date string into a standard display date (MM/DD/YYYY).
+ * Formats a date string into a standard display date (DD/MM/YYYY).
  *
  * @param value - The date string to format.
- * @returns Formatted date string or "Not provided" if invalid or missing.
+ * @returns Formatted date string or "Não fornecido" if invalid or missing.
  */
 export const formatSubscriptionDateTime = (value?: string): string => {
   const trimmed = value?.trim();
   if (!trimmed) return "Não fornecido";
   const parsedDate = dayjs(trimmed);
   return parsedDate.isValid()
-    ? parsedDate.format("MM/DD/YYYY")
+    ? parsedDate.format("DD/MM/YYYY")
     : "Não fornecido";
 };
 

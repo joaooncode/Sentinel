@@ -9,88 +9,42 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSignUp } from "@clerk/expo";
-import { Link, useRouter } from "expo-router";
+import { Link } from "expo-router";
 import { styled } from "nativewind";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 import SocialAuthButtons from "@/components/SocialAuthButtons";
 
+import { useAuthFlow } from "@/hooks/useAuthFlow";
+
 const SafeAreaView = styled(RNSafeAreaView);
 
 export default function SignUpScreen() {
-  const { signUp, errors, fetchStatus } = useSignUp();
-  const router = useRouter();
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
-  const [pendingVerification, setPendingVerification] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
 
-  const isSubmitting = fetchStatus === "fetching";
+  const {
+    registerWithPassword,
+    verifyCode,
+    errorMessage,
+    setErrorMessage,
+    pendingVerification,
+    setPendingVerification,
+    isSignUpSubmitting,
+    signUpErrors,
+  } = useAuthFlow();
 
   const handleSignUp = async () => {
-    if (!emailAddress || !password) {
-      setErrorMessage("Preencha todos os campos.");
-      return;
-    }
-    setErrorMessage("");
-
-    try {
-      const { error } = await signUp.password({
-        emailAddress,
-        password,
-      });
-
-      if (error) {
-        setErrorMessage(error.message || "Erro ao criar conta.");
-        return;
-      }
-
-      await signUp.verifications.sendEmailCode();
-      setPendingVerification(true);
-    } catch (err: any) {
-      setErrorMessage(err?.message || "Ocorreu um erro ao criar conta.");
-    }
+    await registerWithPassword(emailAddress, password);
   };
 
   const handleVerify = async () => {
-    if (!code) {
-      setErrorMessage("Informe o código de verificação recebido.");
-      return;
-    }
-    setErrorMessage("");
-
-    try {
-      const { error } = await signUp.verifications.verifyEmailCode({
-        code,
-      });
-
-      if (error) {
-        setErrorMessage(error.message || "Código inválido.");
-        return;
-      }
-
-      if (signUp.status === "complete") {
-        await signUp.finalize({
-          navigate: ({ session, decorateUrl }) => {
-            if (session?.currentTask) return;
-            const url = decorateUrl("/");
-            if (url.startsWith("http")) {
-              window.location.href = url;
-            } else {
-              router.replace("/(tabs)");
-            }
-          },
-        });
-      }
-    } catch (err: any) {
-      setErrorMessage(err?.message || "Ocorreu um erro ao verificar o código.");
-    }
+    await verifyCode(code);
   };
 
-  const hasEmailError = Boolean(errors?.fields?.emailAddress);
-  const hasPasswordError = Boolean(errors?.fields?.password);
-  const hasCodeError = Boolean(errors?.fields?.code);
+  const hasEmailError = Boolean(signUpErrors?.fields?.emailAddress);
+  const hasPasswordError = Boolean(signUpErrors?.fields?.password);
+  const hasCodeError = Boolean(signUpErrors?.fields?.code);
 
   return (
     <SafeAreaView className="auth-safe-area">
@@ -136,7 +90,7 @@ export default function SignUpScreen() {
                 <SocialAuthButtons
                   mode="signUp"
                   onError={setErrorMessage}
-                  disabled={isSubmitting}
+                  disabled={isSignUpSubmitting}
                 />
 
                 <View className="auth-form">
@@ -151,9 +105,9 @@ export default function SignUpScreen() {
                       onChangeText={setEmailAddress}
                       className={`auth-input ${hasEmailError ? "auth-input-error" : ""}`}
                     />
-                    {errors?.fields?.emailAddress ? (
+                    {signUpErrors?.fields?.emailAddress ? (
                       <Text className="auth-error">
-                        {errors.fields.emailAddress.message}
+                        {signUpErrors.fields.emailAddress.message}
                       </Text>
                     ) : null}
                   </View>
@@ -168,20 +122,20 @@ export default function SignUpScreen() {
                       onChangeText={setPassword}
                       className={`auth-input ${hasPasswordError ? "auth-input-error" : ""}`}
                     />
-                    {errors?.fields?.password ? (
+                    {signUpErrors?.fields?.password ? (
                       <Text className="auth-error">
-                        {errors.fields.password.message}
+                        {signUpErrors.fields.password.message}
                       </Text>
                     ) : null}
                   </View>
 
                   <TouchableOpacity
                     onPress={handleSignUp}
-                    disabled={isSubmitting}
+                    disabled={isSignUpSubmitting}
                     activeOpacity={0.8}
-                    className={`auth-button ${isSubmitting ? "auth-button-disabled" : ""}`}
+                    className={`auth-button ${isSignUpSubmitting ? "auth-button-disabled" : ""}`}
                   >
-                    {isSubmitting ? (
+                    {isSignUpSubmitting ? (
                       <ActivityIndicator color="#081126" />
                     ) : (
                       <Text className="auth-button-text">Continuar</Text>
@@ -201,20 +155,20 @@ export default function SignUpScreen() {
                     onChangeText={setCode}
                     className={`auth-input text-center tracking-widest text-xl ${hasCodeError ? "auth-input-error" : ""}`}
                   />
-                  {errors?.fields?.code ? (
+                  {signUpErrors?.fields?.code ? (
                     <Text className="auth-error">
-                      {errors.fields.code.message}
+                      {signUpErrors.fields.code.message}
                     </Text>
                   ) : null}
                 </View>
 
                 <TouchableOpacity
                   onPress={handleVerify}
-                  disabled={isSubmitting}
+                  disabled={isSignUpSubmitting}
                   activeOpacity={0.8}
-                  className={`auth-button ${isSubmitting ? "auth-button-disabled" : ""}`}
+                  className={`auth-button ${isSignUpSubmitting ? "auth-button-disabled" : ""}`}
                 >
-                  {isSubmitting ? (
+                  {isSignUpSubmitting ? (
                     <ActivityIndicator color="#081126" />
                   ) : (
                     <Text className="auth-button-text">Confirmar e Entrar</Text>
