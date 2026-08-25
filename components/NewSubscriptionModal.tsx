@@ -53,7 +53,10 @@ export default function NewSubscriptionModal({
 
   // Manipulador de preço
   const handlePriceChange = useCallback((text: string) => {
-    const cleaned = text.replace(/[^0-9.,]/g, "").replace(",", ".");
+    const normalized = text.replace(/,/g, ".").replace(/[^0-9.]/g, "");
+    const parts = normalized.split(".");
+    const cleaned =
+      parts.length > 1 ? `${parts[0]}.${parts.slice(1).join("")}` : parts[0];
     setPriceText(cleaned);
     setErrors((prev) => ({ ...prev, price: undefined }));
   }, []);
@@ -77,7 +80,10 @@ export default function NewSubscriptionModal({
   // Submissão e validação com Zod
   const handleSubmit = async () => {
     Keyboard.dismiss();
-    const numericPrice = parseFloat(priceText);
+    const trimmedPrice = priceText.trim();
+    const parsedPrice = Number(trimmedPrice);
+    const numericPrice =
+      trimmedPrice === "" || Number.isNaN(parsedPrice) ? 0 : parsedPrice;
     const finalCategory =
       category === "Outros" && customCategory.trim()
         ? customCategory.trim()
@@ -85,7 +91,7 @@ export default function NewSubscriptionModal({
 
     const rawFormData = {
       name,
-      price: isNaN(numericPrice) ? 0 : numericPrice,
+      price: numericPrice,
       billing,
       category: finalCategory,
       plan: plan.trim() || undefined,
@@ -129,7 +135,14 @@ export default function NewSubscriptionModal({
   };
 
   const isFormValid = useMemo(() => {
-    return name.trim().length >= 2 && parseFloat(priceText) > 0;
+    const trimmedPrice = priceText.trim();
+    const parsedPrice = Number(trimmedPrice);
+    return (
+      name.trim().length >= 2 &&
+      trimmedPrice !== "" &&
+      !Number.isNaN(parsedPrice) &&
+      parsedPrice > 0
+    );
   }, [name, priceText]);
 
   return (

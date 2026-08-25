@@ -182,13 +182,13 @@ export function buildSimpleIconCdnUrl(slug: string, hexColor?: string): string {
 
 /**
  * Identifica a marca correspondente pelo nome e retorna sua URL oficial na CDN e metadados.
- * Se o nome não estiver no mapa pré-definido, tenta normalizar como um slug válido.
+ * Apenas consulta correspondências presentes na allowlist (BRAND_MAP).
  */
 export function resolveBrandInfo(name: string): ResolvedBrandInfo | null {
   if (!name || !name.trim()) return null;
   const lowerName = name.toLowerCase().trim();
 
-  // 1. Busca por keyword no catálogo
+  // Busca por keyword no catálogo permitida (BRAND_MAP)
   for (const [keyword, config] of Object.entries(BRAND_MAP)) {
     if (lowerName.includes(keyword)) {
       return {
@@ -198,19 +198,6 @@ export function resolveBrandInfo(name: string): ResolvedBrandInfo | null {
         logoUri: buildSimpleIconCdnUrl(config.slug, config.hex),
       };
     }
-  }
-
-  // 2. Tenta inferência direta do primeiro termo como slug (ex: "Stripe", "Linear", "Prisma")
-  const words = lowerName.split(/[\s-_]+/);
-  const potentialSlug = words[0]?.replace(/[^a-z0-9]/g, "");
-
-  if (potentialSlug && potentialSlug.length >= 3) {
-    return {
-      name: name.trim(),
-      slug: potentialSlug,
-      hex: "081126",
-      logoUri: buildSimpleIconCdnUrl(potentialSlug),
-    };
   }
 
   return null;

@@ -52,6 +52,8 @@ export default function Index() {
                 onPress={() => setIsNewSubModalOpen(true)}
                 activeOpacity={0.7}
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                accessibilityRole="button"
+                accessibilityLabel="Adicionar assinatura"
               >
                 <Image source={icons.add} className="home-add-icon" />
               </TouchableOpacity>

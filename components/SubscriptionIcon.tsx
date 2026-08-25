@@ -76,6 +76,12 @@ export default function SubscriptionIcon({
     );
   }
 
+  const fallbackColor = brandHex
+    ? brandHex.startsWith("#")
+      ? brandHex
+      : `#${brandHex}`
+    : color;
+
   // 2. Se houver ícone Lucide por categoria/fallback
   if (lucideIcon) {
     const ResolvedIcon: LucideIcon =
@@ -86,7 +92,7 @@ export default function SubscriptionIcon({
         className={className ?? "items-center justify-center"}
         style={{ alignItems: "center", justifyContent: "center" }}
       >
-        <ResolvedIcon size={size} color={color} strokeWidth={1.75} />
+        <ResolvedIcon size={size} color={fallbackColor} strokeWidth={1.75} />
       </View>
     );
   }
@@ -109,7 +115,7 @@ export default function SubscriptionIcon({
       className={className ?? "items-center justify-center"}
       style={{ alignItems: "center", justifyContent: "center" }}
     >
-      <Star size={size} color={color} strokeWidth={1.75} />
+      <Star size={size} color={fallbackColor} strokeWidth={1.75} />
     </View>
   );
 }
