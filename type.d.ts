@@ -14,6 +14,11 @@ import type {
   SocialAuthStrategy as ISocialAuthStrategy,
 } from "./types/auth";
 
+import type {
+  NewSubscriptionFormData as INewSubscriptionFormData,
+  BillingCycle as IBillingCycle,
+} from "./schemas/subscription";
+
 declare global {
   type AppTab = IAppTab;
   type TabIconProps = ITabIconProps;
@@ -24,8 +29,11 @@ declare global {
   type ListHeadingProps = IListHeadingProps;
   type SocialAuthButtonsProps = ISocialAuthButtonsProps;
   type SocialAuthStrategy = ISocialAuthStrategy;
+  type NewSubscriptionFormData = INewSubscriptionFormData;
+  type BillingCycle = IBillingCycle;
 }
 
 export * from "./types/subscription";
 export * from "./types/navigation";
 export * from "./types/auth";
+export * from "./schemas/subscription";

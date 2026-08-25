@@ -9,12 +9,13 @@ import {
 } from "react-native";
 import { styled } from "nativewind";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
-import { ALL_SUBSCRIPTIONS } from "@/constants/data";
 import SubscriptionCard from "@/components/SubscriptionCard";
 import SearchBar from "@/components/SearchBar";
 import { formatCurrency } from "@/lib/utils";
 import { Ionicons } from "@expo/vector-icons";
 import { clsx } from "clsx";
+import { useSubscriptions } from "@/context/SubscriptionContext";
+import NewSubscriptionModal from "@/components/NewSubscriptionModal";
 
 const SafeAreaView = styled(RNSafeAreaView);
 
@@ -26,29 +27,32 @@ const STATUS_FILTERS = [
 ];
 
 export default function Subscriptions() {
+  const { subscriptions, cancelSubscription, totalMonthlySpend } =
+    useSubscriptions();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("Todas");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [expandedSubscriptionId, setExpandedSubscriptionId] = useState<
     string | null
   >(null);
+  const [isNewSubModalOpen, setIsNewSubModalOpen] = useState(false);
 
   // Extract unique categories dynamically
   const categories = useMemo(() => {
     const unique = new Set<string>();
-    ALL_SUBSCRIPTIONS.forEach((sub) => {
+    subscriptions.forEach((sub) => {
       if (sub.category) {
         unique.add(sub.category);
       }
     });
     return ["Todas", ...Array.from(unique)];
-  }, []);
+  }, [subscriptions]);
 
   // Filter subscriptions according to query, category and status
   const filteredSubscriptions = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
 
-    return ALL_SUBSCRIPTIONS.filter((sub) => {
+    return subscriptions.filter((sub) => {
       const matchesCategory =
         selectedCategory === "Todas" || sub.category === selectedCategory;
 
@@ -64,21 +68,12 @@ export default function Subscriptions() {
 
       return matchesCategory && matchesStatus && matchesSearch;
     });
-  }, [searchQuery, selectedCategory, selectedStatus]);
+  }, [subscriptions, searchQuery, selectedCategory, selectedStatus]);
 
   // Statistics calculation for the summary card
   const activeSubscriptions = useMemo(() => {
-    return ALL_SUBSCRIPTIONS.filter((sub) => sub.status !== "cancelado");
-  }, []);
-
-  const totalMonthlySpend = useMemo(() => {
-    return activeSubscriptions.reduce((acc, sub) => {
-      // If annual, approximate monthly fraction
-      const monthlyPrice =
-        sub.billing?.toLowerCase() === "anual" ? sub.price / 12 : sub.price;
-      return acc + monthlyPrice;
-    }, 0);
-  }, [activeSubscriptions]);
+    return subscriptions.filter((sub) => sub.status?.toLowerCase() === "ativo");
+  }, [subscriptions]);
 
   const hasActiveFilters =
     searchQuery.length > 0 ||
@@ -103,14 +98,26 @@ export default function Subscriptions() {
         ListHeaderComponent={
           <View className="mb-2">
             {/* Header Title */}
-            <View className="mb-1 flex-row items-baseline justify-between">
-              <Text className="text-3xl font-sans-extrabold text-primary">
-                Assinaturas
-              </Text>
-              <Text className="text-sm font-sans-semibold text-muted-foreground">
-                {filteredSubscriptions.length}{" "}
-                {filteredSubscriptions.length === 1 ? "item" : "itens"}
-              </Text>
+            <View className="mb-1 flex-row items-center justify-between">
+              <View>
+                <Text className="text-3xl font-sans-extrabold text-primary">
+                  Assinaturas
+                </Text>
+                <Text className="text-sm font-sans-semibold text-muted-foreground">
+                  {filteredSubscriptions.length}{" "}
+                  {filteredSubscriptions.length === 1 ? "item" : "itens"}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => setIsNewSubModalOpen(true)}
+                className="flex-row items-center gap-1 rounded-2xl bg-accent px-4 py-2.5"
+                activeOpacity={0.8}
+              >
+                <Ionicons name="add" size={18} color="#081126" />
+                <Text className="text-sm font-sans-bold text-primary">
+                  Adicionar
+                </Text>
+              </TouchableOpacity>
             </View>
 
             {/* Summary Card */}
@@ -219,6 +226,7 @@ export default function Subscriptions() {
                 currentId === item.id ? null : item.id,
               )
             }
+            onCancelPress={() => cancelSubscription(item.id)}
           />
         )}
         ListEmptyComponent={() => (
@@ -246,6 +254,11 @@ export default function Subscriptions() {
             )}
           </View>
         )}
+      />
+
+      <NewSubscriptionModal
+        visible={isNewSubModalOpen}
+        onClose={() => setIsNewSubModalOpen(false)}
       />
     </SafeAreaView>
   );

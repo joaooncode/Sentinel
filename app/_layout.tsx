@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 
+import { SubscriptionProvider } from "@/context/SubscriptionContext";
+
 // Garante o fechamento correto de sessões OAuth no mobile/web
 WebBrowser.maybeCompleteAuthSession();
 
@@ -62,7 +64,9 @@ function InitialLayout() {
   if ((!fontsLoaded && !fontError) || !authLoaded) return null;
 
   return (
-    <Stack screenOptions={{ headerShown: false }} initialRouteName="(tabs)" />
+    <SubscriptionProvider>
+      <Stack screenOptions={{ headerShown: false }} initialRouteName="(tabs)" />
+    </SubscriptionProvider>
   );
 }
 
