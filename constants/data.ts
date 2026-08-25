@@ -1,4 +1,5 @@
 import { icons } from "./icons";
+import type { HistoryTransaction, InsightsDayData } from "@/types/subscription";
 
 export const tabs: AppTab[] = [
   { name: "index", title: "Início", icon: icons.home },
@@ -198,4 +199,77 @@ export const ALL_SUBSCRIPTIONS: Subscription[] = [
     renewalDate: "2026-03-05T10:00:00.000Z",
     color: "#f3f4f6",
   },
+];
+
+export const HISTORY_TRANSACTIONS: HistoryTransaction[] = [
+  {
+    id: "tx-claude-1",
+    name: "Claude",
+    date: "25 de Junho, 12:00",
+    price: 9.84,
+    currency: "USD",
+    billing: "por mês",
+    color: "#f5d03b",
+    icon: icons.claude,
+  },
+  {
+    id: "tx-canva-1",
+    name: "Canva",
+    date: "30 de Junho, 16:00",
+    price: 43.89,
+    currency: "USD",
+    billing: "por mês",
+    color: "#8fd1bd",
+    icon: icons.canva,
+  },
+  {
+    id: "tx-notion-1",
+    name: "Notion",
+    date: "02 de Julho, 09:30",
+    price: 15.0,
+    currency: "USD",
+    billing: "por mês",
+    color: "#e2e8f0",
+    icon: icons.notion,
+  },
+  {
+    id: "tx-figma-1",
+    name: "Figma",
+    date: "05 de Julho, 14:15",
+    price: 12.0,
+    currency: "USD",
+    billing: "por mês",
+    color: "#fed7aa",
+    icon: icons.figma,
+  },
+  {
+    id: "tx-spotify-1",
+    name: "Spotify",
+    date: "10 de Julho, 11:00",
+    price: 5.99,
+    currency: "USD",
+    billing: "por mês",
+    color: "#c7f0db",
+    icon: icons.spotify,
+  },
+  {
+    id: "tx-github-1",
+    name: "GitHub",
+    date: "12 de Julho, 18:40",
+    price: 4.0,
+    currency: "USD",
+    billing: "por mês",
+    color: "#e8def8",
+    icon: icons.github,
+  },
+];
+
+export const INSIGHTS_WEEKLY_DEFAULT: InsightsDayData[] = [
+  { day: "Seg", label: "Seg", amount: 36 },
+  { day: "Ter", label: "Ter", amount: 31 },
+  { day: "Qua", label: "Qua", amount: 23 },
+  { day: "Qui", label: "Qui", amount: 40 },
+  { day: "Sex", label: "Sex", amount: 34 },
+  { day: "Sáb", label: "Sáb", amount: 21 },
+  { day: "Dom", label: "Dom", amount: 24 },
 ];

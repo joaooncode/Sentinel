@@ -449,4 +449,28 @@
   .sub-summary-badge-text {
     @apply text-xs font-sans-bold text-accent;
   }
+
+  .insights-header {
+    @apply mb-3 flex-row items-center justify-between;
+  }
+
+  .insights-icon-btn {
+    @apply size-12 items-center justify-center rounded-full border border-black/10 bg-card;
+  }
+
+  .insights-title {
+    @apply text-xl font-sans-bold text-primary;
+  }
+
+  .insights-chart-card {
+    @apply rounded-3xl border border-border bg-card p-5;
+  }
+
+  .insights-expenses-box {
+    @apply mt-5 flex-row items-center justify-between border-t border-border/80 pt-4;
+  }
+
+  .insights-history-card {
+    @apply mb-3.5 flex-row items-center justify-between rounded-2xl p-4;
+  }
 }
