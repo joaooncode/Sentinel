@@ -8,10 +8,12 @@ const ListHeading = ({
   onActionPress,
   showAction = true,
 }: ListHeadingProps) => {
+  const shouldShowAction = showAction && Boolean(onActionPress);
+
   return (
     <View className="list-head">
       <Text className="list-title">{title}</Text>
-      {showAction && (
+      {shouldShowAction && (
         <TouchableOpacity
           onPress={onActionPress}
           activeOpacity={0.7}

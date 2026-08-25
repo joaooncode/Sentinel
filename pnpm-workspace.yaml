@@ -12,3 +12,4 @@ allowBuilds:
   '@prisma/engines': true
   '@nestjs/core': true
   '@clerk/shared': true
+  '@scarf/scarf': true

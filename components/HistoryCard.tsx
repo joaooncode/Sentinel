@@ -43,7 +43,7 @@ export default function HistoryCard({ item }: HistoryCardProps) {
       {/* Price and Billing Frequency */}
       <View className="items-end pl-2">
         <Text className="text-lg font-sans-bold text-primary">
-          {formatCurrency(item.price)}
+          {formatCurrency(item.price, item.currency)}
         </Text>
         <Text className="mt-0.5 text-xs font-sans-medium text-primary/60">
           {item.billing}

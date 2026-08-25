@@ -20,15 +20,15 @@ enum SubscriptionStatus {
 }
 
 model User {
-  id            String         @id // Clerk User ID (ex: user_2N9x...)
-  email         String         @unique
+  id            String           @id // Clerk User ID (ex: user_2N9x...)
+  email         String           @unique
   name          String?
   avatarUrl     String?
-  currency      String         @default("BRL")
+  currency      String           @default("BRL")
   subscriptions Subscription[]
   transactions  BillingHistory[]
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
 
   @@map("users")
 }
@@ -61,6 +61,7 @@ model Subscription {
   createdAt     DateTime           @default(now())
   updatedAt     DateTime           @updatedAt
 
+  @@unique([id, userId])
   @@index([userId])
   @@index([status])
   @@index([renewalDate])
@@ -72,7 +73,7 @@ model BillingHistory {
   userId         String
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   subscriptionId String
-  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  subscription   Subscription @relation(fields: [subscriptionId, userId], references: [id, userId], onDelete: Cascade)
   
   amount         Decimal      @db.Decimal(10, 2)
   currency       String       @default("BRL")
