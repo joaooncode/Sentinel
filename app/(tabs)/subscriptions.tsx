@@ -72,7 +72,7 @@ export default function Subscriptions() {
 
   // Statistics calculation for the summary card
   const activeSubscriptions = useMemo(() => {
-    return subscriptions.filter((sub) => sub.status !== "cancelado");
+    return subscriptions.filter((sub) => sub.status?.toLowerCase() === "ativo");
   }, [subscriptions]);
 
   const hasActiveFilters =

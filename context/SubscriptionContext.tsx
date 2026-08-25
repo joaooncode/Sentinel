@@ -7,10 +7,7 @@ import React, {
 } from "react";
 import { ALL_SUBSCRIPTIONS, UPCOMING_SUBSCRIPTIONS } from "@/constants/data";
 import { icons } from "@/constants/icons";
-import {
-  resolveSubscriptionIcon,
-  resolveSubscriptionIconName,
-} from "@/constants/subscriptionIcons";
+import { resolveSubscriptionIconName } from "@/constants/subscriptionIcons";
 import { resolveBrandInfo } from "@/constants/brandIcons";
 import type { Subscription, UpcomingSubscription } from "@/types/subscription";
 import type { NewSubscriptionFormData } from "@/schemas/subscription";
