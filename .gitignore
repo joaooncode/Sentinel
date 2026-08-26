@@ -45,3 +45,12 @@ app-example
 # IDE
 .idea/
 .env
+
+# Prisma generated clients
+backend/src/infrastructure/prisma/generated-client/
+
+# Local development context files
+BACKEND_ROADMAP.md
+
+# Worktrees
+.worktrees/

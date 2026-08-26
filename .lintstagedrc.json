@@ -1,4 +1,11 @@
 {
-  "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
+  "client/**/*.{js,jsx,ts,tsx}": [
+    "pnpm --filter @sentinel/client lint:fix",
+    "prettier --write"
+  ],
+  "backend/**/*.{ts,js}": [
+    "pnpm --filter @sentinel/backend lint:fix",
+    "prettier --write"
+  ],
   "*.{json,md,css}": ["prettier --write"]
 }
