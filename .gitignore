@@ -45,3 +45,6 @@ app-example
 # IDE
 .idea/
 .env
+
+# Local development context files
+BACKEND_ROADMAP.md
