@@ -29,3 +29,15 @@ Whenever the user starts a prompt with any of the following shortcuts, immediate
 
 - `/commit-pr [mensagem/instrução opcional]`:
   1. Realizar o fluxo do `/commit` seguido imediatamente pelo fluxo do `/pr`.
+
+---
+
+# Feature Request & Refinement Rule (/grill-me)
+
+- **Solicitação de Novas Features**: Sempre que o usuário solicitar o desenvolvimento de uma nova funcionalidade/feature, execute o processo de refinamento e entrevista (`/grill-me`) antes de iniciar a codificação.
+- **Objetivo**: Refinar a tarefa, alinhar decisões de design e regras de negócio, construir exatamente o que foi solicitado e otimizar a janela de contexto.
+- **Diretrizes do /grill-me**:
+  1. Realize perguntas interativas estruturadas via `ask_question` para sanar dúvidas e tomar decisões de design/arquitetura ramo a ramo.
+  2. Apresente sempre uma resposta recomendada prefixada com `(Recommended)` para orientar o usuário.
+  3. Se a informação puder ser obtida inspecionando a base de código, investigue o repositório antes de perguntar.
+  4. Somente após a conclusão da entrevista e alinhamento do escopo, elabore o plano e proceda para a implementação.

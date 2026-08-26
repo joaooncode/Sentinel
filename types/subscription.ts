@@ -45,4 +45,28 @@ export type UpcomingSubscriptionCardProps = Omit<UpcomingSubscription, "id">;
 
 export interface ListHeadingProps {
   title: string;
+  actionText?: string;
+  onActionPress?: () => void;
+  showAction?: boolean;
+}
+
+export interface HistoryTransaction {
+  id: string;
+  name: string;
+  date: string;
+  price: number;
+  currency?: string;
+  billing: string;
+  color?: string;
+  icon?: ImageSourcePropType;
+  brandLogoUri?: string;
+  brandHex?: string;
+  lucideIcon?: string;
+}
+
+export interface InsightsDayData {
+  day: string;
+  label: string;
+  amount: number;
+  date?: string;
 }

@@ -1,0 +1,89 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum BillingCycle {
+  SEMANAL
+  MENSAL
+  ANUAL
+}
+
+enum SubscriptionStatus {
+  ATIVO
+  PAUSADO
+  CANCELADO
+}
+
+model User {
+  id            String           @id // Clerk User ID (ex: user_2N9x...)
+  email         String           @unique
+  name          String?
+  avatarUrl     String?
+  currency      String           @default("BRL")
+  subscriptions Subscription[]
+  transactions  BillingHistory[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@map("users")
+}
+
+model Subscription {
+  id            String             @id @default(uuid())
+  userId        String
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name          String
+  plan          String?            @default("Padrão")
+  category      String             @default("Outros")
+  paymentMethod String?            @default("Não informado")
+  status        SubscriptionStatus @default(ATIVO)
+  
+  price         Decimal            @db.Decimal(10, 2)
+  currency      String             @default("BRL")
+  billing       BillingCycle       @default(MENSAL)
+  
+  startDate     DateTime           @default(now())
+  renewalDate   DateTime
+  
+  color         String?
+  lucideIcon    String?
+  brandLogoUri  String?
+  brandHex      String?
+  
+  history       BillingHistory[]
+  
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  @@unique([id, userId])
+  @@index([userId])
+  @@index([status])
+  @@index([renewalDate])
+  @@map("subscriptions")
+}
+
+model BillingHistory {
+  id             String       @id @default(uuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscriptionId String
+  subscription   Subscription @relation(fields: [subscriptionId, userId], references: [id, userId], onDelete: Cascade)
+  
+  amount         Decimal      @db.Decimal(10, 2)
+  currency       String       @default("BRL")
+  paidAt         DateTime     @default(now())
+  status         String       @default("pago")
+  notes          String?
+  
+  createdAt      DateTime     @default(now())
+
+  @@index([userId])
+  @@index([subscriptionId])
+  @@map("billing_history")
+}
