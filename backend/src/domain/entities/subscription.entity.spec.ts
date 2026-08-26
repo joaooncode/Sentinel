@@ -1,7 +1,6 @@
 import { Subscription } from "./subscription.entity";
 import { Price } from "../value-objects/price.vo";
 import { BillingPeriod } from "../value-objects/billing-period.vo";
-import { SubscriptionStatus } from "../value-objects/subscription-status.vo";
 import { RenewalDate } from "../value-objects/renewal-date.vo";
 import { InvalidSubscriptionOperationException } from "../errors/invalid-subscription-operation.exception";
 

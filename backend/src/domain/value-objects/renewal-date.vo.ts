@@ -1,5 +1,3 @@
-import * as dayjsImport from "dayjs";
-const dayjs = (dayjsImport as any).default || dayjsImport;
 import { BillingPeriod, BillingCycle } from "./billing-period.vo";
 
 export class RenewalDate {
@@ -30,9 +28,18 @@ export class RenewalDate {
   }
 
   public daysUntilRenewal(now: Date = new Date()): number {
-    const startOfRenewal = dayjs(this._value).startOf("day");
-    const startOfNow = dayjs(now).startOf("day");
-    return startOfRenewal.diff(startOfNow, "day");
+    const msPerDay = 1000 * 60 * 60 * 24;
+    const utcRenewal = Date.UTC(
+      this._value.getUTCFullYear(),
+      this._value.getUTCMonth(),
+      this._value.getUTCDate(),
+    );
+    const utcNow = Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+    );
+    return Math.round((utcRenewal - utcNow) / msPerDay);
   }
 
   public isOverdue(now: Date = new Date()): boolean {
@@ -45,16 +52,16 @@ export class RenewalDate {
         ? billingPeriod.value
         : billingPeriod;
 
-    let nextDate: Date;
+    const nextDate = new Date(this._value.getTime());
     switch (cycle) {
       case "SEMANAL":
-        nextDate = dayjs(this._value).add(1, "week").toDate();
+        nextDate.setUTCDate(nextDate.getUTCDate() + 7);
         break;
       case "MENSAL":
-        nextDate = dayjs(this._value).add(1, "month").toDate();
+        nextDate.setUTCMonth(nextDate.getUTCMonth() + 1);
         break;
       case "ANUAL":
-        nextDate = dayjs(this._value).add(1, "year").toDate();
+        nextDate.setUTCFullYear(nextDate.getUTCFullYear() + 1);
         break;
       default:
         throw new Error(`Ciclo de cobrança inválido: ${cycle}`);

@@ -35,12 +35,16 @@ describe("Price Value Object", () => {
   });
 
   it("should throw error if amount is NaN or infinite", () => {
-    expect(() => Price.create(NaN)).toThrow("O valor da assinatura é inválido.");
-    expect(() => Price.create(Infinity)).toThrow("O valor da assinatura é inválido.");
+    expect(() => Price.create(NaN)).toThrow(
+      "O valor da assinatura é inválido.",
+    );
+    expect(() => Price.create(Infinity)).toThrow(
+      "O valor da assinatura é inválido.",
+    );
   });
 
   it("should throw error if currency is unsupported", () => {
-    expect(() => Price.create(50, "GBP" as any)).toThrow(
+    expect(() => Price.create(50, "GBP" as unknown as "BRL")).toThrow(
       "Moeda não suportada: GBP",
     );
   });

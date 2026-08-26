@@ -1,10 +1,13 @@
 import { SubscriptionMapper } from "./subscription.mapper";
 import { Subscription } from "../../domain/entities/subscription.entity";
-import { Prisma } from "@prisma/client";
+import {
+  Prisma,
+  Subscription as PrismaSubscriptionModel,
+} from "@prisma/client";
 
 describe("SubscriptionMapper", () => {
   it("should map from Prisma model to Domain Entity", () => {
-    const raw: any = {
+    const raw: PrismaSubscriptionModel = {
       id: "sub-123",
       userId: "user-456",
       name: "Netflix",

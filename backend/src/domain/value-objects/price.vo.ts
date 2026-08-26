@@ -1,4 +1,7 @@
-import { SupportedCurrency, SUPPORTED_CURRENCIES } from "../entities/user.entity";
+import {
+  SupportedCurrency,
+  SUPPORTED_CURRENCIES,
+} from "../entities/user.entity";
 
 export class Price {
   private readonly _amount: number;

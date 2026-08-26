@@ -1,4 +1,4 @@
-import { BillingPeriod, BillingCycle } from "./billing-period.vo";
+import { BillingPeriod } from "./billing-period.vo";
 
 describe("BillingPeriod Value Object", () => {
   it("should create a valid BillingPeriod for MENSAL", () => {
@@ -43,7 +43,7 @@ describe("BillingPeriod Value Object", () => {
   });
 
   it("should throw error for invalid billing cycle", () => {
-    expect(() => BillingPeriod.create("DIARIO" as any)).toThrow(
+    expect(() => BillingPeriod.create("DIARIO" as unknown as "MENSAL")).toThrow(
       "Ciclo de cobrança inválido: DIARIO",
     );
   });

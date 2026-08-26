@@ -1,7 +1,4 @@
-import {
-  SubscriptionStatus,
-  SubscriptionStatusType,
-} from "./subscription-status.vo";
+import { SubscriptionStatus } from "./subscription-status.vo";
 import { InvalidSubscriptionOperationException } from "../errors/invalid-subscription-operation.exception";
 
 describe("SubscriptionStatus Value Object", () => {
@@ -20,9 +17,9 @@ describe("SubscriptionStatus Value Object", () => {
   });
 
   it("should throw error on invalid status", () => {
-    expect(() => SubscriptionStatus.create("INVALIDO" as any)).toThrow(
-      "Status de assinatura inválido: INVALIDO",
-    );
+    expect(() =>
+      SubscriptionStatus.create("INVALIDO" as unknown as "ATIVO"),
+    ).toThrow("Status de assinatura inválido: INVALIDO");
   });
 
   describe("State transitions from ATIVO", () => {

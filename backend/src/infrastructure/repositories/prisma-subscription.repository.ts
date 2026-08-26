@@ -52,7 +52,7 @@ export class PrismaSubscriptionRepository implements ISubscriptionRepository {
             ],
           }
         : {}),
-  };
+    };
 
     const list = await this.prisma.subscription.findMany({
       where,

@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { SupportedCurrency, SUPPORTED_CURRENCIES } from "./user.entity";
+import { SupportedCurrency } from "./user.entity";
 import { Price } from "../value-objects/price.vo";
 import {
   BillingPeriod,
@@ -260,10 +260,7 @@ export class Subscription {
       this._price =
         props.price instanceof Price
           ? props.price
-          : Price.create(
-              props.price,
-              props.currency ?? this._price.currency,
-            );
+          : Price.create(props.price, props.currency ?? this._price.currency);
     }
     if (props.billing !== undefined) {
       this._billing =
