@@ -1,4 +1,4 @@
-import { User as PrismaUserModel } from "@prisma/client";
+import { User as PrismaUserModel } from "../prisma/generated-client";
 import { User, SupportedCurrency } from "@domain/entities/user.entity";
 
 export class UserMapper {

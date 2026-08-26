@@ -14,6 +14,7 @@
     "lint": "pnpm --filter @sentinel/client lint && pnpm --filter @sentinel/backend lint",
     "lint:fix": "pnpm --filter @sentinel/client lint:fix && pnpm --filter @sentinel/backend lint:fix",
     "test": "pnpm --filter @sentinel/backend test",
+    "prisma:generate": "pnpm --filter @sentinel/backend prisma:generate",
     "prepare": "husky"
   },
   "devDependencies": {
