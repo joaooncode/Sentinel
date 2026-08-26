@@ -91,6 +91,15 @@ export class User {
     this._updatedAt = new Date();
   }
 
+  public updateEmail(email: string): void {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      throw new Error("Email inválido.");
+    }
+    this._email = email.toLowerCase().trim();
+    this._updatedAt = new Date();
+  }
+
   public updateCurrency(currency: string): void {
     if (!SUPPORTED_CURRENCIES.includes(currency as SupportedCurrency)) {
       throw new Error(`Moeda não suportada: ${currency}`);

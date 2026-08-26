@@ -59,6 +59,28 @@ describe("SyncClerkUserUseCase", () => {
     expect(result.user?.avatarUrl).toBe("https://example.com/new.png");
   });
 
+  it("should update existing user email when email is changed in event", async () => {
+    const existing = User.create({
+      id: "user_clerk_999",
+      email: "maria.old@example.com",
+      name: "Maria",
+    });
+    await inMemoryRepo.save(existing);
+
+    const result = await useCase.execute({
+      eventType: "user.updated",
+      data: {
+        id: "user_clerk_999",
+        email: "maria.new@example.com",
+      },
+    });
+
+    expect(result.action).toBe("updated");
+    expect(result.user?.email).toBe("maria.new@example.com");
+    const saved = await inMemoryRepo.findById("user_clerk_999");
+    expect(saved?.email).toBe("maria.new@example.com");
+  });
+
   it("should delete user when user.deleted event is received", async () => {
     const existing = User.create({
       id: "user_clerk_999",

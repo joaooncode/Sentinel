@@ -62,7 +62,15 @@ export class WebhooksController {
       throw new BadRequestException("Headers de assinatura Svix ausentes.");
     }
 
-    const payload = JSON.stringify(req.body);
+    const rawBodyBuffer = req.rawBody;
+    if (!rawBodyBuffer) {
+      this.logger.error("Raw body não disponível para validação do webhook.");
+      throw new BadRequestException(
+        "Corpo da requisição em formato bruto indisponível.",
+      );
+    }
+
+    const payload = rawBodyBuffer.toString("utf8");
     const wh = new Webhook(webhookSecret);
     let evt: ClerkWebhookEvent;
 

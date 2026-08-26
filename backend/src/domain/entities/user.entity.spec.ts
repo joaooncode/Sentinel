@@ -72,4 +72,23 @@ describe("User Entity (Domain)", () => {
       "Moeda não suportada: INVALID",
     );
   });
+
+  it("should update email with a valid email address", () => {
+    const user = User.create({
+      id: "user_123",
+      email: "old@example.com",
+    });
+
+    user.updateEmail("new@example.com");
+    expect(user.email).toBe("new@example.com");
+  });
+
+  it("should throw error when updating with an invalid email address", () => {
+    const user = User.create({
+      id: "user_123",
+      email: "old@example.com",
+    });
+
+    expect(() => user.updateEmail("invalid-email")).toThrow("Email inválido.");
+  });
 });

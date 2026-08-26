@@ -80,6 +80,9 @@ export class SyncClerkUserUseCase {
       name,
       avatarUrl: data.imageUrl,
     });
+    if (data.email) {
+      user.updateEmail(data.email);
+    }
     await this.userRepository.save(user);
 
     return {
