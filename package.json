@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "pnpm --filter @sentinel/client start",
-    "client:start": "pnpm --filter @sentinel/client start",
+    "client:start": "pnpm --filter @sentinel/client start --clear",
     "client:android": "pnpm --filter @sentinel/client android",
     "client:ios": "pnpm --filter @sentinel/client ios",
     "client:web": "pnpm --filter @sentinel/client web",
